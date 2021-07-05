@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bestbud Chat</title>
+    <link rel="stylesheet" href="./global.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Bestbud Chat</h1>
+
+      <form action="" class="form-login">
+        <input
+          type="text"
+          name="username"
+          placeholder="Choose a nickname"
+          required
+        />
+        <button>Enter</button>
+      </form>
+
+      <div class="message-board hidden">
+        <ul class="message-list">
+          <!-- <li>
+            <div class="username">hai anh</div>
+            <div class="message">co Phuong oi!</div>
+          </li> -->
+        </ul>
+        <form action="" class="form-message">
+          <input
+            type="text"
+            name="message"
+            placeholder="Your message..."
+            required
+          />
+          <button>Send</button>
+        </form>
+
+        <a href="/chess">Chess</a>
+      </div>
+    </div>
+
+    <script src="./client.js"></script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam:wght@300;400;700&family=Quicksand:wght@300;400;700&display=swap');
+body {
+  background: #eee;
+  margin: 40px;
+}
+body,
+button,
+input {
+  font-family: 'Quicksand', 'Be Vietnam', sans-serif;
+}
+h1 {
+  text-align: center;
+  color: #444;
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #fbfbfb;
+}
+/* .container {
+  max-width: 960px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+.form-login,
+.form-message {
+  display: flex;
+  justify-content: center;
+}
+input {
+  padding: 16px;
+  font-size: 1.3em;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+button {
+  font-size: 1.3em;
+  padding: 16px;
+  background: #006aee;
+  color: white;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.message-list {
+  padding: 0;
+}
+.message-list li {
+  margin: 16px 0;
+  list-style-type: none;
+}
+.message-list .username {
+  color: #006aee;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.message-list .message {
+  font-size: 1.2em;
+  margin-top: 4px;
+}
+.hidden {
+  display: none;
+} */

@@ -27,55 +27,28 @@
           <!-- <div id="status"></div> -->
           <ul id="timeline"></ul>
         </div>
-        <div id="new-game-settings" class="modal">
-          <div class="modal-content radio-group">
+        <div id="game-settings" class="modal">
+          <div class="modal-content flex-column">
             <div id="select-play-mode">
               <h2>Select play mode</h2>
-              <div class="radio">
-                <input
-                  id="radio-1"
-                  name="radio"
-                  type="radio"
-                  value="local"
-                  checked
-                />
-                <label for="radio-1" class="radio-label">Local</label>
-              </div>
-
-              <div class="radio">
-                <input
-                  id="radio-2"
-                  name="radio"
-                  type="radio"
-                  value="bot"
-                  unchecked
-                />
-                <label for="radio-2" class="radio-label">Bot</label>
-              </div>
-
-              <div class="radio">
-                <input
-                  id="radio-3"
-                  name="radio"
-                  type="radio"
-                  value="network"
-                  unchecked
-                />
-                <label for="radio-3" class="radio-label">Network</label>
-              </div>
+              <button id="button-mode-local">Local</button>
+              <button id="button-mode-bot">Bot</button>
+              <button id="button-mode-network">Network</button>
             </div>
-
-            <div id="select-play-color">
+            <div id="select-play-color" class="radio-group">
               <h2>Choose your color</h2>
               <div class="radio">
                 <input
                   id="radio-color-1"
                   name="radio"
                   type="radio"
-                  value="white"
-                  unchecked
+                  value="w"
+                  checked
                 />
-                <label for="radio-color-1" class="radio-label">White</label>
+                <label for="radio-color-1" class="radio-label"
+                  >White
+                  <img src="/assets/chess/images/staunty/wK.svg" />
+                </label>
               </div>
 
               <div class="radio">
@@ -83,10 +56,12 @@
                   id="radio-color-2"
                   name="radio"
                   type="radio"
-                  value="black"
+                  value="b"
                   unchecked
                 />
-                <label for="radio-color-2" class="radio-label">Black</label>
+                <label for="radio-color-2" class="radio-label"
+                  >Black <img src="/assets/chess/images/staunty/bK.svg"
+                /></label>
               </div>
 
               <div class="radio">
@@ -97,11 +72,13 @@
                   value="random"
                   unchecked
                 />
-                <label for="radio-color-3" class="radio-label">Random</label>
+                <label for="radio-color-3" class="radio-label"
+                  >Random<img src="/assets/chess/images/dice.svg"
+                /></label>
               </div>
-            </div>
 
-            <button id="button-start">Start</button>
+              <button id="button-start">Start</button>
+            </div>
           </div>
         </div>
         <div id="promotion" class="modal">

@@ -5,4 +5,6 @@ This app is currently in alpha. Things are likely to break.
 - [x] add local human vs human play mode
 - [x] add a chess engine as AI player
 - [x] refactor code into event-driven functions to avoid copy-pastes
+- [x] improve settings UI for new games
+- [ ] fix board input handler for Black when starting a new game
 - [ ] clean up main.js

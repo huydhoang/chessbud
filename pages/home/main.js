@@ -24,42 +24,83 @@ const BOARD = new Chessboard(document.getElementById('board'), {
 // Global variables
 let SQUARE_FROM, SQUARE_TO, PROMO_CHOICE;
 let PLAY_MODE = 'local';
-let PLAY_COLOR = 'white';
+let PLAY_COLOR = 'w';
+const ENGINE_DEPTH = 13;
 
 const PLAYERS = { w: 'human', b: 'bot' };
 
-// Listen for play mode selection
+// DOM refs
+const GAME_SETTINGS = document.getElementById('game-settings');
 const SELECT_PLAY_MODE = document.getElementById('select-play-mode');
 const SELECT_PLAY_COLOR = document.getElementById('select-play-color');
-const RADIO_COLOR_WHITE = document.getElementById('radio-color-1');
-for (let i = 1; i <= 3; i++) {
-  const radio = document.getElementById(`radio-${i}`);
-  radio.addEventListener('change', () => {
-    PLAY_MODE = radio.value;
-    if (PLAY_MODE !== 'local') {
-      SELECT_PLAY_MODE.remove();
-      RADIO_COLOR_WHITE.checked = true;
-      SELECT_PLAY_COLOR.style.display = 'block';
+const buttonStart = document.getElementById('button-start');
+
+// Listen for play mode selection
+['local', 'bot', 'network'].forEach((mode) => {
+  const buttonMode = document.getElementById(`button-mode-${mode}`);
+  buttonMode.addEventListener('click', () => {
+    PLAY_MODE = mode;
+    SELECT_PLAY_MODE.style.display = 'none';
+    if (mode === 'local') {
+      GAME_SETTINGS.style.display = 'none';
+      buttonStart.click();
+    } else {
+      SELECT_PLAY_COLOR.style.display = 'flex';
     }
   });
-}
+});
 
 // Listen for play color selection
 for (let i = 1; i <= 3; i++) {
   const radio = document.getElementById(`radio-color-${i}`);
   radio.addEventListener('change', () => {
-    PLAY_COLOR = radio.value;
+    const colors = ['w', 'b'];
+    if (colors.indexOf(radio.value) !== -1) {
+      PLAY_COLOR = radio.value;
+    } else {
+      // if user chose random color
+      PLAY_COLOR = colors[Math.round(Math.random())];
+    }
   });
 }
+
+// Enable board input according to play mode
+buttonStart.addEventListener('click', () => {
+  GAME_SETTINGS.style.display = 'none';
+  // ws.send(`game mode: ${PLAY_MODE}`);
+  switch (PLAY_MODE) {
+    case 'local': {
+      PLAYERS.w = PLAYERS.b = 'human';
+      console.log(PLAYERS);
+      BOARD.enableMoveInput(localModeInputHandler);
+      break;
+    }
+
+    case 'bot': {
+      BOARD.enableMoveInput(botModeInputHandler, PLAY_COLOR);
+      break;
+    }
+
+    case 'network': {
+      console.log('network');
+
+      break;
+    }
+
+    default:
+      break;
+  }
+});
 
 // tomitank 5.0 elo 2980 https://github.com/tomitank/tomitankChess
 const tomitank = new Worker('../../assets/chess/engines/tomitankChess.js');
 tomitank.postMessage('uci'); // get build info
 tomitank.postMessage('ucinewgame'); // start a new game
 tomitank.onmessage = function (e) {
-  if (!e.data.startsWith('info')) {
-    console.log(e.data);
-  }
+  console.log(e.data);
+  // if (!e.data.startsWith('info')) {
+  //   console.log(e.data);
+  // }
   if (e.data.startsWith('bestmove')) {
     const bestMove = e.data.split(' ')[1];
     // console.log(bestMove);
@@ -119,7 +160,7 @@ for (let i = 0; i < promoPieces.length; i++) {
         if (PLAYERS[GAME.turn()] === 'bot') {
           BOARD.disableMoveInput();
           tomitank.postMessage(`position fen ${GAME.fen()}`);
-          tomitank.postMessage(`go depth 10`); // 10 ply search
+          tomitank.postMessage(`go depth ${ENGINE_DEPTH}`); // search depth
           // console.log('called bot');
         }
       } else {
@@ -128,36 +169,6 @@ for (let i = 0; i < promoPieces.length; i++) {
     }
   });
 }
-
-// Enable board input according to play mode
-const buttonStart = document.getElementById('button-start');
-buttonStart.addEventListener('click', () => {
-  const modal = document.getElementById('new-game-settings');
-  modal.style.display = 'none';
-  // ws.send(`game mode: ${PLAY_MODE}`);
-  switch (PLAY_MODE) {
-    case 'local': {
-      PLAYERS.w = PLAYERS.b = 'human';
-      console.log(PLAYERS);
-      BOARD.enableMoveInput(localModeInputHandler);
-      break;
-    }
-
-    case 'bot': {
-      BOARD.enableMoveInput(botModeInputHandler, COLOR.white);
-      break;
-    }
-
-    case 'network': {
-      console.log('network');
-
-      break;
-    }
-
-    default:
-      break;
-  }
-});
 
 //
 const botModeInputHandler = (event) => {
@@ -207,7 +218,7 @@ const botModeInputHandler = (event) => {
         // tomitank comments on last move
         GAME.undo();
         tomitank.postMessage(`position fen ${GAME.fen()}`);
-        tomitank.postMessage(`go depth 10`); // 10 ply search
+        tomitank.postMessage(`go depth ${ENGINE_DEPTH}`); // search depth
         GAME.move(move);
 
         // const [lastMove] = GAME.history().slice(-1);
@@ -224,7 +235,7 @@ const botModeInputHandler = (event) => {
           // event.chessboard.enableMoveInput(botModeInputHandler, COLOR.white);
 
           tomitank.postMessage(`position fen ${GAME.fen()}`);
-          tomitank.postMessage(`go depth 10`); // 10 ply search
+          tomitank.postMessage(`go depth ${ENGINE_DEPTH}`); // search depth
         }
       } else {
         console.warn('Illegal move!', move);

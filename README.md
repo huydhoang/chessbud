@@ -6,5 +6,6 @@ This app is currently in alpha. Things are likely to break.
 - [x] add a chess engine as AI player
 - [x] refactor code into event-driven functions to avoid copy-pastes
 - [x] improve settings UI for new games
-- [ ] fix board input handler for Black when starting a new game
+- [x] fix board input handler for Black when starting a new game
+- [ ] decouple bestmove tutor into a separate api using stockfish
 - [ ] clean up main.js

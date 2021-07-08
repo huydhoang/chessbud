@@ -25,9 +25,9 @@ const BOARD = new Chessboard(document.getElementById('board'), {
 let SQUARE_FROM, SQUARE_TO, PROMO_CHOICE;
 let PLAY_MODE = 'local';
 let PLAY_COLOR = 'w';
-const ENGINE_DEPTH = 13;
+const ENGINE_DEPTH = 0;
 
-const PLAYERS = { w: 'human', b: 'bot' };
+const PLAYERS = { w: 'human', b: 'human' };
 
 // DOM refs
 const GAME_SETTINGS = document.getElementById('game-settings');
@@ -77,6 +77,21 @@ buttonStart.addEventListener('click', () => {
     }
 
     case 'bot': {
+      switch (PLAY_COLOR) {
+        case 'w': {
+          PLAYERS.b = 'bot';
+          break;
+        }
+        case 'b': {
+          PLAYERS.w = 'bot';
+          break;
+        }
+      }
+      if (PLAY_COLOR === 'b') {
+        BOARD.disableMoveInput();
+        tomitank.postMessage(`position fen ${GAME.fen()}`);
+        tomitank.postMessage(`go depth ${ENGINE_DEPTH}`); // search depth
+      }
       BOARD.enableMoveInput(botModeInputHandler, PLAY_COLOR);
       break;
     }
@@ -215,11 +230,11 @@ const botModeInputHandler = (event) => {
       const move = { from: event.squareFrom, to: event.squareTo };
       const result = GAME.move(move);
       if (result) {
-        // tomitank comments on last move
-        GAME.undo();
-        tomitank.postMessage(`position fen ${GAME.fen()}`);
-        tomitank.postMessage(`go depth ${ENGINE_DEPTH}`); // search depth
-        GAME.move(move);
+        // // tomitank comments on last move
+        // GAME.undo();
+        // tomitank.postMessage(`position fen ${GAME.fen()}`);
+        // tomitank.postMessage(`go depth ${TUTOR_DEPTH}`); // search depth
+        // GAME.move(move);
 
         // const [lastMove] = GAME.history().slice(-1);
         // ws.send(lastMove);

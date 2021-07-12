@@ -25,7 +25,7 @@ const BOARD = new Chessboard(document.getElementById('board'), {
 let SQUARE_FROM, SQUARE_TO, PROMO_CHOICE;
 let PLAY_MODE = 'local';
 let PLAY_COLOR = 'w';
-const ENGINE_DEPTH = 0;
+const ENGINE_DEPTH = 15;
 
 const PLAYERS = { w: 'human', b: 'human' };
 
@@ -230,11 +230,17 @@ const botModeInputHandler = (event) => {
       const move = { from: event.squareFrom, to: event.squareTo };
       const result = GAME.move(move);
       if (result) {
-        // // tomitank comments on last move
-        // GAME.undo();
-        // tomitank.postMessage(`position fen ${GAME.fen()}`);
-        // tomitank.postMessage(`go depth ${TUTOR_DEPTH}`); // search depth
-        // GAME.move(move);
+        // Stockfish 14 comments on last move
+        GAME.undo();
+        // cache fen string for logging afterward
+        const fen = GAME.fen();
+        fetch(`https://pacific-sea-19421.herokuapp.com/v1?fen="${fen}"&time=15`)
+          .then((response) => response.json())
+          .then((data) =>
+            // must use cached fen string else it will use new fen after the game moved
+            console.log(`Stockfish 14: fen=${fen} => bestmove=${data.Move}`)
+          );
+        GAME.move(move);
 
         // const [lastMove] = GAME.history().slice(-1);
         // ws.send(lastMove);
